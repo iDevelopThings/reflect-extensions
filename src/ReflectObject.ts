@@ -1,4 +1,4 @@
-import {ReflectClass} from "./ReflectClass";
+import {DescriptorInfo} from "./declaration";
 import {ReflectFunction} from "./ReflectFunction";
 
 function isPropertyLike(key: string, descriptor: PropertyDescriptor) {

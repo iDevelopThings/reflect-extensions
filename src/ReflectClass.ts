@@ -1,3 +1,4 @@
+import {ClassType, DescriptorInfo} from "./declaration";
 import {ReflectFunction} from "./ReflectFunction";
 import {ReflectObject} from "./ReflectObject";
 

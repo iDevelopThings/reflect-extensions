@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": [
       "ESNext",
@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "declaration": true,
-    "noEmit": true,
+    "emitDeclarationOnly": true,
     "keyofStringsOnly": true,
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -25,7 +25,12 @@
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/declaration.d.ts",
+    "src/ReflectObject.ts",
+    "src/ReflectFunction.ts",
+    "src/ReflectClass.ts",
+    "src/index.ts",
+    "src/Reflect.ts",
   ],
   "exclude": [
     "node_modules",

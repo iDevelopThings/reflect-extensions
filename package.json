@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "dist": "node build.js",
+    "dist": "npm run build && tsc -p tsconfig.dist.json",
     "preview": "vite preview",
     "test": "vitest run --no-threads"
   },
