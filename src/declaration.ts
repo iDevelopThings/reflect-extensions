@@ -5,3 +5,6 @@ export type DescriptorInfo = {
 	enumerable?: boolean;
 	writable?: boolean;
 }
+
+
+export type FunctionParameter = { name: string, value: any };

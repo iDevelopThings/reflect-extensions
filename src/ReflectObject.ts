@@ -1,4 +1,5 @@
 import {DescriptorInfo} from "./declaration";
+import {ReflectBase} from "./ReflectBase";
 import {ReflectFunction} from "./ReflectFunction";
 
 function isPropertyLike(key: string, descriptor: PropertyDescriptor) {
@@ -13,11 +14,9 @@ function isPropertyLike(key: string, descriptor: PropertyDescriptor) {
 	return true;
 }
 
-export class ReflectObject<T extends object = {}> {
+export class ReflectObject<T extends object = {}> extends ReflectBase {
 	private instanceDescriptors: { [P in keyof T]: TypedPropertyDescriptor<T[P]> } & { [p: string]: PropertyDescriptor } = {} as any;
 	private descriptors: { [P in keyof T]: TypedPropertyDescriptor<T[P]> } & { [p: string]: PropertyDescriptor }         = {} as any;
-
-	constructor(public thing: T) {}
 
 	getDescriptors(ignoreCache: boolean = false) {
 		if (this.descriptors) return this.descriptors;

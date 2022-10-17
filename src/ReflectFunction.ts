@@ -1,8 +1,11 @@
 import {getArgs} from 'reflect-args';
+import {FunctionParameter} from "./declaration";
+import {ReflectBase} from "./ReflectBase";
+import {ReflectFunctionCallBuilder} from "./ReflectFunctionCallBuilder";
 
-export class ReflectFunction<T = any> {
+export class ReflectFunction<T = any> extends ReflectBase {
 
-	constructor(public thing: T) { }
+	private paramsCache: FunctionParameter[];
 
 	is(): boolean {
 		const value = Reflect.apply(Object.prototype.toString, this.thing, []);
@@ -14,18 +17,33 @@ export class ReflectFunction<T = any> {
 		return new ReflectFunction(thing).is();
 	}
 
-	getParams(): { name: string, value: any }[] {
+	getParams(): FunctionParameter[] {
+		if (this.paramsCache) return this.paramsCache;
+
 		const params = [];
 		const args   = getArgs(this.thing) as Map<string, any>;
 
 		for (let [key, value] of args.entries()) {
 			params.push({name : key, value : value});
 		}
-		return params;
+
+		return this.paramsCache = params;
 	}
 
 	getParamNames() {
 		return this.getParams().map(param => param.name);
+	}
+
+	build(): ReflectFunctionCallBuilder {
+		return new ReflectFunctionCallBuilder(this);
+	}
+
+	call<T = any>(...args: any[]): T {
+		return Reflect.apply(this.thing, undefined, args);
+	}
+
+	callWithInstance<T = any>(instance: any, ...args: any[]): T {
+		return Reflect.apply(this.thing, instance, args);
 	}
 
 }

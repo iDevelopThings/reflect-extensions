@@ -86,6 +86,17 @@ export class ReflectClass<T extends object = {}> extends ReflectObject<T> {
 		}, {});
 	}
 
+	method(name: string): ReflectFunction {
+		const method = this.getMethod(name);
+		if (!method) {
+			throw new Error(`Cannot find method ${name} on ${this.getConstructor().name}.`);
+		}
+
+		return new ReflectFunction(method);
+	}
+
+	//	callMethod(instance:any, name:)
+
 	addMethod(name: string, method: Function | any, descriptorInfo: DescriptorInfo = {}) {
 		if (this.getInstanceDescriptors()[name]) {
 			throw new Error(`Cannot add method ${name} to ${this.getConstructor().name} because it already exists.`);
