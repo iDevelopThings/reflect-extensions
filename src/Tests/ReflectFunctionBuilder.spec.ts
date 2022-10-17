@@ -2,7 +2,6 @@
 
 import {describe} from "vitest";
 import {reflect} from "../index";
-import {ReflectFunction} from '../ReflectFunction';
 
 describe('ReflectFunctionBuilder', () => {
 
@@ -71,19 +70,37 @@ describe('ReflectFunctionBuilder', () => {
 		const getNumberFunction = reflect(testClass).class().method('getNumber').build();
 
 		expect(testFunction.instance(testClass).call()).toBe(1);
-		expect(setNumberFunction.instance(testClass).parameters(1).call()).toBe(true);
+		expect(setNumberFunction.instance(testClass).parameters([1]).call()).toBe(true);
 		expect(testClass.number).toBe(1);
 		expect(getNumberFunction.instance(testClass).call()).toBe(1);
 
 	});
 
 	test('calling function via builder with undefined as a param', () => {
-		const testFunction    = reflect(() => 1).function().build();
-		const testFunctionTwo = reflect((args: any) => args).function().build();
+		const testFunction      = reflect(() => 1).function().build();
+		const testFunctionTwo   = reflect((args: any) => args).function().build();
+		const testFunctionThree = reflect((obj: { [key: string]: any }) => obj).function().build();
 
 		expect(testFunction.parameters(undefined).call()).toBe(1);
 		expect(testFunctionTwo.parameters(undefined).call()).toBe(undefined);
-		expect(testFunctionTwo.parameters([undefined]).call()).toStrictEqual([undefined]);
+		expect(testFunctionThree.parameters([{some : 'value'}]).call()).toStrictEqual({some : 'value'});
+		expect(testFunctionTwo.parameters([undefined]).call()).toStrictEqual(undefined);
+	});
+	test('proxied method call', () => {
+		const obj: any = {};
+		const original = function (message: string) {
+			return message;
+		};
+
+		Object.defineProperty(obj, 'test', {
+			value : (...args) => {
+				const handler = reflect(original).function().build();
+				return handler.parameters(args).call();
+			}
+		});
+
+		const res = obj.test('hello world');
+		expect(res).toBe('hello world');
 	});
 
 });

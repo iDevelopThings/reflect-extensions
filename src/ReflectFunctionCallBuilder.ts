@@ -27,7 +27,7 @@ export class ReflectFunctionCallBuilder {
 		return [params];
 	}
 
-	public parameters(...parameters: any[]) {
+	public parameters(parameters: any[]) {
 		this._parameters = this.prepParameters(parameters);
 		return this;
 	}
