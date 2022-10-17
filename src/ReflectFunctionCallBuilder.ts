@@ -15,8 +15,20 @@ export class ReflectFunctionCallBuilder {
 		return this;
 	}
 
+	private prepParameters(params:any) {
+		if(params === undefined) {
+			return [];
+		}
+
+		if(Array.isArray(params)) {
+			return params;
+		}
+
+		return [params];
+	}
+
 	public parameters(...parameters: any[]) {
-		this._parameters = parameters;
+		this._parameters = this.prepParameters(parameters);
 		return this;
 	}
 

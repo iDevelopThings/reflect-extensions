@@ -77,5 +77,14 @@ describe('ReflectFunctionBuilder', () => {
 
 	});
 
+	test('calling function via builder with undefined as a param', () => {
+		const testFunction    = reflect(() => 1).function().build();
+		const testFunctionTwo = reflect((args: any) => args).function().build();
+
+		expect(testFunction.parameters(undefined).call()).toBe(1);
+		expect(testFunctionTwo.parameters(undefined).call()).toBe(undefined);
+		expect(testFunctionTwo.parameters([undefined]).call()).toStrictEqual([undefined]);
+	});
+
 });
 
